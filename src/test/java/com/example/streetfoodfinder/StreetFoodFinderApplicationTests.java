@@ -9,5 +9,8 @@ class StreetFoodFinderApplicationTests {
     @Test
     void contextLoads() {
     }
-
+    @Test
+    void Init(){
+        System.out.printf("test");
+    }
 }
