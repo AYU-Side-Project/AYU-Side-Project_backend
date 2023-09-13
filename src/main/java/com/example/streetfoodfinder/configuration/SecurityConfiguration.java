@@ -1,4 +1,4 @@
-package com.example.restfull.Configuration;
+package com.example.streetfoodfinder.configuration;
 
 import com.example.streetfoodfinder.Filter.JwtAuthenticationFilter;
 import com.example.streetfoodfinder.Filter.JwtTokenProvider;

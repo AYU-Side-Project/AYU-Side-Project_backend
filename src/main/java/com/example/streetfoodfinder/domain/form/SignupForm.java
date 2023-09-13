@@ -2,6 +2,9 @@ package com.example.streetfoodfinder.domain.form;
 
 import com.example.streetfoodfinder.domain.entity.Member;
 import lombok.*;
+
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +21,8 @@ public class SignupForm {
                 .pw(from.getPw())
                 .name(from.getName())
                 .contact(from.getContact())
+                .updateDate(LocalDateTime.now())
+                .createDate(LocalDateTime.now())
                 .build();
     }
 }

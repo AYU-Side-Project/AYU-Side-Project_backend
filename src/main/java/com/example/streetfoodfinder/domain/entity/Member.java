@@ -8,7 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,10 +45,10 @@ public class Member implements UserDetails {
 
     // private Image profile;//이미지 저장 구현 필요
 
-    @NotBlank
-    private LocalTime createDate;
-    @NotBlank
-    private LocalTime updateDate;
+    @NotNull
+    private LocalDateTime createDate;
+    @NotNull
+    private LocalDateTime updateDate;
 
     @Column
     private String verification_code;//인증코드
