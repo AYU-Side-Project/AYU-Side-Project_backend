@@ -12,14 +12,14 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-
 public class SignupService {
     private final MemberRepository memberRepos;
     private final PasswordEncoder passwordEncoder;
-    //private final MailgunClient mailgunClient;
+    private  MailgunClient mailgunClient;
     public boolean isMemberExist(String email){
         return memberRepos.findByEmail(email).isPresent();
     }
@@ -40,7 +40,7 @@ public class SignupService {
             Member member = signupForm.from(signupForm);
             encrypt_pw = passwordEncoder.encode(signupForm.getPw());
             member.setPw(encrypt_pw);
-            /*
+
             randomCode = getRandomCode();
             SendMailForm sendMailForm = SendMailForm.builder()
                     .from("test@naver.com")
@@ -51,7 +51,7 @@ public class SignupService {
             mailgunClient.sendEmail(sendMailForm);
             member.setVerification_code(randomCode);
             member.setCertified(false);
-             */
+
             memberRepos.save(member);
 
             return member;
