@@ -63,7 +63,8 @@ public class SignupService {
         else {
             throw new MemberException(ErrorCode.NOT_VALID_PASSWORD);
         }
-    }
+    }/*
+    */
     private String MailText(String email, String code) {
         StringBuilder stringBuilder = new StringBuilder();
 
