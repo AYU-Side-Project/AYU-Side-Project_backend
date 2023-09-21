@@ -18,11 +18,10 @@ public class LogInService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private LoginForm loginForm;
 
     @Transactional
     public Token login(String email, String pw) {
-        loginForm = new LoginForm();
+
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(ErrorCode.NOT_MEMBER));
