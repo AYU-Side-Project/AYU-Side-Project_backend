@@ -15,21 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class DeleteService {
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder = null;
 
     //public boolean isMemberWithdraw(String email, String pw){return memberRepository.findByEmail(email).isPresent();}
 
     @Transactional
-    public Member deleteMember(DeleteForm deleteForm){
+    public void deleteMember(DeleteForm deleteForm) {
         Member member = memberRepository.findByEmail(deleteForm.getEmail()).orElseThrow(
-                ()->new MemberException(ErrorCode.NOT_EXIST_MEMBER)
+                () -> new MemberException(ErrorCode.NOT_EXIST_MEMBER)
         );
-        if(passwordEncoder.matches(deleteForm.getPw(), member.getPw())){
-            memberRepository.delete(member);
-            return member;
-        }
 
-        else{
+        if (passwordEncoder.matches(deleteForm.getPw(), member.getPw())) {
+            memberRepository.delete(member);
+        } else {
             throw new MemberException(ErrorCode.NOT_CORRECT_PASSWORD);
         }
     }
