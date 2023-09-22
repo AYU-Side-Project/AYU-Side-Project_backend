@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -94,6 +95,16 @@ public class Member implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    //패스워드 암호화
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        this.pw = passwordEncoder.encode(pw);
+    }
+
+    //비밀번호 변경 및 회원 탈퇴 시, 비밀번호 일치 확인.
+    public boolean matchPassword(PasswordEncoder passwordEncoder,String checkPasword){
+        return passwordEncoder.matches(checkPasword, getPassword());
     }
 }
 
