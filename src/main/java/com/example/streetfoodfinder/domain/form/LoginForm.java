@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 public class LoginForm {
     private String email;
     private String pw;
-    public static Member from (LoginForm lfrom){//폼으로 받은 값을 엔티티로 전달
+    public static Member from (LoginForm from){//폼으로 받은 값을 엔티티로 전달
         return Member.builder()
-                .email(lfrom.getEmail())
-                .pw(lfrom.getPw())
+                .email(from.getEmail())
+                .pw(from.getPw())
                 .build();
     }
 }

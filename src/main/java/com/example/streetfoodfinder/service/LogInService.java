@@ -24,9 +24,9 @@ public class LogInService {
 
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberException(ErrorCode.NOT_MEMBER));
+                .orElseThrow(() -> new MemberException(ErrorCode.NOT_EXIST_MEMBER));
         if (!passwordEncoder.matches(pw, member.getPw())) {
-            throw new MemberException(ErrorCode.NOT_PASSWORD);
+            throw new MemberException(ErrorCode.NOT_CORRECT_PASSWORD);
         }
 
         Token tokenDto = jwtTokenProvider.createAccessToken(member.getUsername(), member.getRoles());

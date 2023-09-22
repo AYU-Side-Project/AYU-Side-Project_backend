@@ -18,7 +18,7 @@ import javax.validation.Valid;
 public class LogInController {
     private final LogInService logInService;
 
-    @PostMapping("/sign-in")
+    @PostMapping("/login")
     public ResponseEntity<Token> signInMember(@RequestBody @Valid LoginForm loginForm) {
 
         Token token = logInService.login(loginForm.getEmail(), loginForm.getPw());
