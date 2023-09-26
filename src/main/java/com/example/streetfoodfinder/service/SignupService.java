@@ -40,7 +40,7 @@ public class SignupService {
             Member member = signupForm.from(signupForm);
             encrypt_pw = passwordEncoder.encode(signupForm.getPw());
             member.setPw(encrypt_pw);
-
+/*
             randomCode = getRandomCode();
             SendMailForm sendMailForm = SendMailForm.builder()
                     .from("test@naver.com")
@@ -49,9 +49,10 @@ public class SignupService {
                     .text(MailText(signupForm.getEmail(), randomCode))
                     .build();
             mailgunClient.sendEmail(sendMailForm);
+            */
+
             member.setVerification_code(randomCode);
             member.setCertified(false);
-
             memberRepos.save(member);
 
             return member;

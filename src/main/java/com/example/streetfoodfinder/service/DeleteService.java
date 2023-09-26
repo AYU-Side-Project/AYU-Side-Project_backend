@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class DeleteService {
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder = null;
-
-    //public boolean isMemberWithdraw(String email, String pw){return memberRepository.findByEmail(email).isPresent();}
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void deleteMember(DeleteForm deleteForm) {
