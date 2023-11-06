@@ -1,22 +1,11 @@
 package com.example.streetfoodfinder.domain.entity;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @Getter
@@ -25,88 +14,55 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Member implements UserDetails {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
-    @Column
-    @NotBlank(message = "이메일을 입력하시오.")
-    @Email(message = "이메일 형식을 맞추세요.")
+    private Long id;
+    private String nickname;
     private String email;
-    @Column
-    @NotBlank(message = "비밀번호를 입력하시오.")
-    @Pattern(regexp="^(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$", message = "특수문자 포함한 8글자 이상의 비밀번호를 입력하시오.(사용가능 특수문자 : !@#$%^&*=")
-    private String pw;
-    @Column
-    @NotBlank(message = "이름을 입력하시오.")
-    private String name;
-    @Column
-    @NotBlank(message = "전화번호를 입력하시오.")
-    private String contact;
+    private String password;
 
-    // private Image profile;//이미지 저장 구현 필요
-
-    @NotNull
-    private LocalDateTime createDate;
-    @NotNull
-    private LocalDateTime updateDate;
-
-    @Column
-    private String verification_code;//인증코드
-    @Column
-    private boolean certified;//인증됨
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+    public static MemberBuilder builder() {
+        return new MemberBuilder();
     }
 
-    @Override
-    public String getPassword() {
-        return null;
+    public String getNickname() {
+        return this.nickname;
     }
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
+    public static class MemberBuilder {
+        private Long id;
+        private String nickname;
+        private String email;
+        private String password;
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+        public MemberBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+        public MemberBuilder nickname(String nickname) {
+            this.nickname = nickname;
+            return this;
+        }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+        public MemberBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+        public MemberBuilder password(String encryptPw) {
+            this.password = encryptPw;
+            return this;
+        }
 
-    //패스워드 암호화
-    public void encodePassword(PasswordEncoder passwordEncoder) {
-        this.pw = passwordEncoder.encode(pw);
-    }
-
-    //비밀번호 변경 및 회원 탈퇴 시, 비밀번호 일치 확인.
-    public boolean matchPassword(PasswordEncoder passwordEncoder,String checkPasword){
-        return passwordEncoder.matches(checkPasword, getPassword());
+        public Member build() {
+            Member member = new Member();
+            member.id = this.id;
+            member.nickname = this.nickname;
+            member.email = this.email;
+            member.password = this.password;
+            return member;
+        }
     }
 }
-
-
-
