@@ -1,30 +1,28 @@
 package com.example.streetfoodfinder.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.streetfoodfinder.service.KakaoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.streetfoodfinder.service.KakaoLogoutService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequiredArgsConstructor
 public class KakaoLogoutController {
 
-    private final KakaoLogoutService kakaoLogoutService;
-
-    @Autowired
-    public KakaoLogoutController(KakaoLogoutService kakaoLogoutService) {
-        this.kakaoLogoutService = kakaoLogoutService;
-    }
+    private final KakaoService kakaoLogoutService;
 
     @GetMapping("/kakao/logout")
-    public ResponseEntity<String> logoutKakaoUser(@RequestParam("accessToken") String accessToken) {
+    public ResponseEntity<String> logoutKakaoUser(HttpServletRequest request) {
+        String accessToken = request.getParameter("accessToken");
         boolean logoutSuccess = kakaoLogoutService.logoutKakaoUser(accessToken);
 
         if (logoutSuccess) {
-            return ResponseEntity.ok("Kakao user logged out successfully.");
+            return ResponseEntity.ok("Kakao 사용자가 성공적으로 로그아웃되었습니다.");
         } else {
-            return ResponseEntity.badRequest().body("Kakao user logout failed.");
+            return ResponseEntity.badRequest().body("Kakao 사용자 로그아웃 실패.");
         }
     }
 }

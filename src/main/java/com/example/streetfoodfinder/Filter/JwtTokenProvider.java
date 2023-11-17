@@ -17,7 +17,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 // 토큰을 생성하고 검증하는 클래스입니다.
 // 해당 컴포넌트는 필터클래스에서 사전 검증을 거칩니다.
@@ -45,12 +44,12 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성 AccessToken
-    public Token createAccessToken(String userEmail, List<String> roles) {
+    public Token createAccessToken(String userEmail) {
         Claims claims = Jwts.claims().setSubject(userEmail); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
-        claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+        // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
 
-        //Access Token
+        // Access Token
         String accessToken = Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
@@ -59,8 +58,8 @@ public class JwtTokenProvider {
                 // signature 에 들어갈 secret값 세팅
                 .compact();
 
-        //Refresh Token
-        String refreshToken =  Jwts.builder()
+        // Refresh Token
+        String refreshToken = Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + refreshTokenValidTime)) // set Expire Time
@@ -74,7 +73,6 @@ public class JwtTokenProvider {
                 .refreshToken(refreshToken)
                 .key(userEmail)
                 .build();
-
     }
 
     // JWT 토큰에서 인증 정보 조회
@@ -103,9 +101,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public String validateRefreshToken(RefreshToken refreshTokenObj){
-
-
+    public String validateRefreshToken(RefreshToken refreshTokenObj) {
         // refresh 객체에서 refreshToken 추출
         String refreshToken = refreshTokenObj.getRefreshToken();
 
@@ -113,25 +109,23 @@ public class JwtTokenProvider {
             // 검증
             Jws<Claims> claims = Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(refreshToken);
 
-            //refresh 토큰의 만료시간이 지나지 않았을 경우, 새로운 access 토큰을 생성합니다.
+            // refresh 토큰의 만료시간이 지나지 않았을 경우, 새로운 access 토큰을 생성합니다.
             if (!claims.getBody().getExpiration().before(new Date())) {
                 return recreationAccessToken(claims.getBody().get("sub").toString(), claims.getBody().get("roles"));
             }
-        }catch (Exception e) {
-
-            //refresh 토큰이 만료되었을 경우, 로그인이 필요합니다.
+        } catch (Exception e) {
+            // refresh 토큰이 만료되었을 경우, 로그인이 필요합니다.
             return null;
-
         }
         return null;
     }
-    public String recreationAccessToken(String userEmail, Object roles){
 
+    public String recreationAccessToken(String userEmail, Object roles) {
         Claims claims = Jwts.claims().setSubject(userEmail); // JWT payload 에 저장되는 정보단위
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
 
-        //Access Token
+        // Access Token
         String accessToken = Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
@@ -142,8 +136,4 @@ public class JwtTokenProvider {
 
         return accessToken;
     }
-
-
-
-
 }

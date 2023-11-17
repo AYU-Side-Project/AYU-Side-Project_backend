@@ -26,10 +26,6 @@ public class Member {
         return new MemberBuilder();
     }
 
-    public String getNickname() {
-        return this.nickname;
-    }
-
     public static class MemberBuilder {
         private Long id;
         private String nickname;
@@ -51,8 +47,8 @@ public class Member {
             return this;
         }
 
-        public MemberBuilder password(String encryptPw) {
-            this.password = encryptPw;
+        public MemberBuilder password(String passsword) {
+            this.password = password;
             return this;
         }
 

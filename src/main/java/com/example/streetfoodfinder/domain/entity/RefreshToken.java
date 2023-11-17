@@ -26,4 +26,7 @@ public class RefreshToken {
     @Column(name = "KEY_EMAIL", nullable = false)
     private String keyEmail;
 
+    public String getRefreshToken() {
+        return this.refreshToken;
+    }
 }

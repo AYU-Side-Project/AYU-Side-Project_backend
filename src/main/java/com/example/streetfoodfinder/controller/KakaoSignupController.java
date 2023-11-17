@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("kakao")
-public class KakaoController {
+public class KakaoSignupController {
     private final KakaoService kakaoService;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
