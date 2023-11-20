@@ -41,16 +41,16 @@ public class KakaoService implements UserDetailsService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RestTemplate restTemplate;
 
-    @Value("e2bb3928b30e2b95f39bf7b508b80c52")
+    @Value("${kakao.client.id}")
     private String KAKAO_CLIENT_ID;
 
-    @Value("$NgNHmFWa4ZJYPpoRwq7Gsq8j9xR0NzRg")
+    @Value("${kakao.client.secret}")
     private String KAKAO_CLIENT_SECRET;
 
-    @Value("http://localhost:8080/kakao/oauth")
+    @Value("${kakao.reditect.url}")
     private String KAKAO_REDIRECT_URL;
 
-    @Value("c5f8ac3466d1e2a40aa0e385942576b6")
+    @Value("${kakao.admin.key}")
     private String KAKAO_ADMIN_KEY;
 
     private final static String KAKAO_AUTH_URI = "https://kauth.kakao.com";
