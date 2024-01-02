@@ -1,8 +1,6 @@
 package com.example.streetfoodfinder.service;
 
-import com.example.streetfoodfinder.domain.entity.Member;
 import com.example.streetfoodfinder.domain.form.KakaoLoginForm;
-import com.example.streetfoodfinder.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,13 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class MemberKakaoService {
 
-    private final MemberRepository memberRepository;
     @Value("${kakao.client.id}")
     private String KAKAO_CLIENT_ID;
     @Value("${kakao.client.secret}")
@@ -145,33 +141,13 @@ public class MemberKakaoService {
         Long id = (long) jsonObj.get("id");
         String email = String.valueOf(account.get("email"));
         String nickname = String.valueOf(profile.get("nickname"));
-        String thumbNailImage = String.valueOf(profile.get("thumbnail_image_url"));
         String profileImage  = String.valueOf(profile.get("profile_image_url"));
 
         return KakaoLoginForm.builder()
                 .id(id)
                 .nickname(nickname)
                 .email(email)
-                .thumbNail(thumbNailImage)
                 .profile(profileImage)
                 .build();
-    }
-    @Transactional
-    public Boolean saveMember(Member member) {
-        boolean msg = false;
-        if(memberRepository.findByKakaoId(member.getKakaoId()).isEmpty()){
-            memberRepository.save(member);
-            msg = true;
-        }
-        return msg;
-    }
-    @Transactional
-    public Boolean deleteMember(Long kakaoId){
-        boolean msg = false;
-        if(memberRepository.findByKakaoId(kakaoId).isPresent()){
-            memberRepository.deleteByKakaoId(kakaoId);
-            msg = true;
-        }
-        return msg;
     }
 }

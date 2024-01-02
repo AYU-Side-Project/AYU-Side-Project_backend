@@ -1,12 +1,10 @@
 package com.example.streetfoodfinder.domain.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,29 +17,17 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
-    @Column
     private Long kakaoId;
-    @Column
     private String nickname;
-    @Column
     private String email;
-    @Column
-    private String contact; //카카오 로그인에서 전화번호를 주지 않음
-    @Column
     private String profile;
-    @Column
-    private String thumbNail;
-    @ColumnDefault("false")
     private Boolean locationInformationConsent;
 
-    @NotNull
     private LocalDateTime createDate;
-    @NotNull
     private LocalDateTime updateDate;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -84,7 +70,6 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }
 
 

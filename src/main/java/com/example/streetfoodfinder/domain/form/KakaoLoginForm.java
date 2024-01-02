@@ -19,8 +19,8 @@ public class KakaoLoginForm {
                 .kakaoId(from.getId())
                 .email(from.getEmail())
                 .nickname(from.getNickname())
-                .thumbNail(from.getThumbNail())
                 .profile(from.getProfile())
+                .locationInformationConsent(false)
                 .updateDate(LocalDateTime.now())
                 .createDate(LocalDateTime.now())
                 .build();
