@@ -69,6 +69,28 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void updateNickname(String nickname) {
+        if(nickname != null && !nickname.equals("")) {
+            this.nickname = nickname;
+        }
+    }
+
+    public void updateProfile(String profile) {
+        if(profile != null && !profile.equals("")) {
+            this.profile = profile;
+        }
+    }
+
+    public void updateLocationInformationConsent(Boolean locationInformationConsent) {
+        if(locationInformationConsent != null) {
+            this.locationInformationConsent = locationInformationConsent;
+        }
+    }
+
+    public void setUpdateDate(){
+        this.updateDate = LocalDateTime.now();
+    }
 }
 
 

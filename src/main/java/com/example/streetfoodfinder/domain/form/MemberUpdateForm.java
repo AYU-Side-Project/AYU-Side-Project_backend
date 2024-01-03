@@ -14,7 +14,6 @@ public class MemberUpdateForm {
                 .nickname(from.nickname)
                 .profile(from.profile)
                 .locationInformationConsent(from.locationInformationConsent)
-                .updateDate(LocalDateTime.now())
                 .build();
     }
 }

@@ -36,17 +36,11 @@ public class MemberService {
     @Transactional
     public void updateMember(Long memberId, Member member){
         Member updatedMember = memberRepository.findByMemberId(memberId).orElseThrow(() -> new MemberException(NOT_EXIST_MEMBER));
-        String nickname = member.getNickname();
-        String profile = member.getProfile();
-        Boolean locationInformationConsent = member.getLocationInformationConsent();
 
-        updatedMember.setUpdateDate(member.getUpdateDate());
-        if(nickname != null && !nickname.equals(""))
-            updatedMember.setNickname(nickname);
-        if(profile != null && !profile.equals(""))
-            updatedMember.setProfile(profile);
-        if(locationInformationConsent != null)
-            updatedMember.setLocationInformationConsent(locationInformationConsent);
+        updatedMember.setUpdateDate();
+        updatedMember.updateNickname(member.getNickname());
+        updatedMember.updateProfile(member.getProfile());
+        updatedMember.updateLocationInformationConsent(member.getLocationInformationConsent());
     }
 
     @Transactional
