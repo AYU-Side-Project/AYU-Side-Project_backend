@@ -45,8 +45,8 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성 AccessToken
-    public Token createAccessToken(String userEmail, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(userEmail); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
+    public Token createAccessToken(Long kakaoId, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(String.valueOf(kakaoId)); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
 
@@ -72,7 +72,7 @@ public class JwtTokenProvider {
                 .grantType(grantTy)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .key(userEmail)
+                .key(String.valueOf(kakaoId))
                 .build();
 
     }
@@ -104,8 +104,6 @@ public class JwtTokenProvider {
     }
 
     public String validateRefreshToken(RefreshToken refreshTokenObj){
-
-
         // refresh 객체에서 refreshToken 추출
         String refreshToken = refreshTokenObj.getRefreshToken();
 
@@ -125,9 +123,8 @@ public class JwtTokenProvider {
         }
         return null;
     }
-    public String recreationAccessToken(String userEmail, Object roles){
-
-        Claims claims = Jwts.claims().setSubject(userEmail); // JWT payload 에 저장되는 정보단위
+    public String recreationAccessToken(String kakaoId, Object roles){
+        Claims claims = Jwts.claims().setSubject(kakaoId); // JWT payload 에 저장되는 정보단위
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
 
@@ -142,8 +139,4 @@ public class JwtTokenProvider {
 
         return accessToken;
     }
-
-
-
-
 }
