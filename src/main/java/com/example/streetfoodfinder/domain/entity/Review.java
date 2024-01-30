@@ -1,4 +1,5 @@
 package com.example.streetfoodfinder.domain.entity;
+import com.example.streetfoodfinder.domain.form.ReviewForm;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,27 +33,11 @@ public class Review {
 
     private LocalDateTime updateDate; // 수정된 날짜
 
-    public void updateTitle(String title) {
-        this.title = title;
-    }
-
-    public void updateContent(String content) {
-        this.content = content;
-    }
-
-    public void updateChecklist(String checklist) {
-        this.checklist = checklist;
-    }
-
-    public void updateWeather(String weather) {
-        this.weather = weather;
-    }
-
-    public void updateCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public void updateUpdateDate(LocalDateTime updateDate) {
+    public void updateFrom(ReviewForm reviewForm, LocalDateTime updateDate) { //0130 업데이트 값
+        this.title = reviewForm.getTitle();
+        this.content = reviewForm.getContent();
+        this.checklist = reviewForm.getChecklist();
+        this.weather = reviewForm.getWeather();
         this.updateDate = updateDate;
     }
 }
