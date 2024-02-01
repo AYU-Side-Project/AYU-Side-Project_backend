@@ -5,25 +5,22 @@ import com.example.streetfoodfinder.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.example.streetfoodfinder.exception.ErrorCode.NOT_EXIST_MEMBER;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    @Transactional
     public Boolean saveMember(Member member) {
-        boolean msg = false;
         if(memberRepository.findByKakaoId(member.getKakaoId()).isEmpty()){
             memberRepository.save(member);
-            msg = true;
+            return true;
         }
-        return msg;
+        return false;
     }
-    @Transactional
+
     public Boolean deleteMember(Long kakaoId){
         boolean msg = false;
         if(memberRepository.findByKakaoId(kakaoId).isPresent()){
@@ -33,7 +30,6 @@ public class MemberService {
         return msg;
     }
 
-    @Transactional
     public void updateMember(Long memberId, Member member){
         Member updatedMember = memberRepository.findByMemberId(memberId).orElseThrow(() -> new MemberException(NOT_EXIST_MEMBER));
 
@@ -43,20 +39,18 @@ public class MemberService {
         updatedMember.updateLocationInformationConsent(member.getLocationInformationConsent());
     }
 
-    @Transactional
-    public Map<String, Object> inquiryMember(Long memberId){
+    public Member inquiryMember(Long memberId){
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(()-> new MemberException(NOT_EXIST_MEMBER));
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("nickname", member.getNickname());
-        map.put("profile", member.getProfile());
-        map.put("locationInformationConsent", member.getLocationInformationConsent());
-        map.put("createDate", member.getCreateDate());
-        map.put("updateDate", member.getUpdateDate());
-        return map;
+        return Member.builder()
+                .nickname(member.getNickname())
+                .profile(member.getProfile())
+                .locationInformationConsent(member.getLocationInformationConsent())
+                .updateDate(member.getUpdateDate())
+                .createDate(member.getCreateDate())
+                .build();
     }
 
-    @Transactional
     public Boolean isConsented(Long memberId){
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(()-> new MemberException(NOT_EXIST_MEMBER));
         return member.getLocationInformationConsent();

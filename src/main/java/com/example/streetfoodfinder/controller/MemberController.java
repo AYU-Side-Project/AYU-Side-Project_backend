@@ -8,7 +8,6 @@ import com.example.streetfoodfinder.domain.form.MemberUpdateForm;
 import com.example.streetfoodfinder.service.MemberKakaoService;
 import com.example.streetfoodfinder.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONArray;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.lang.reflect.Array;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -71,8 +67,8 @@ public class MemberController {
 
     @GetMapping("/member/{memberId}") //조회
     public ResponseEntity<Object> memberInquiry(@PathVariable Long memberId){
-        Map<String, Object> map = memberService.inquiryMember(memberId);
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        Member member = memberService.inquiryMember(memberId);
+        return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
     @GetMapping("/isconsented/{memberId}")//위치정보동의 했는지 확인
