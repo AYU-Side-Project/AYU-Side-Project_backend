@@ -30,10 +30,9 @@ public class Restaurant {
         if (o == null || getClass() != o.getClass())
             return false; //음식점 객체가 맞고 null이 아닌지 확인
         Restaurant restaurant = (Restaurant) o;
-        return Objects.equals(previewImage, restaurant.previewImage) &&
-                Objects.equals(latitude, restaurant.latitude) &&
+        return Objects.equals(latitude, restaurant.latitude) &&
                 Objects.equals(longitude, restaurant.longitude);
-        //이미 이름으로 찾은 음식점들이기 때문에 이름 제외 하나라도 다르면 false
+        //이미 이름으로 찾은 음식점들이기 때문에 이름 제외, 위치가 다르면 false
     }
 
     @Override
