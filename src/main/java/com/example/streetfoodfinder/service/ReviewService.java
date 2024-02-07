@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
-    private final ReviewRepository reviewrepository;
+    private final ReviewRepository reviewRepository;
     private final S3Config amazonS3Client;
     private final UploadPhotoService uploadPhotoService;
 
@@ -25,7 +25,7 @@ public class ReviewService {
         if (reviewform != null) { //폼 클래스에서 받은 값이 존재 한다면
             LocalDateTime createDate = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES); //작성한 날짜 지정
             review = ReviewForm.reviewfrom(reviewform, createDate); //폼 값과 시간 전달
-            reviewrepository.save(review);
+            reviewRepository.save(review);
         }
 
 
@@ -36,25 +36,24 @@ public class ReviewService {
 
     @Transactional
     public void updateReview(Long reviewId, ReviewForm reviewform) { //0130 리뷰수정 기능
-        Review existingReview = reviewrepository.findById(reviewId) //리뷰 아이디로 찾는다.
+        Review existingReview = reviewRepository.findById(reviewId) //리뷰 아이디로 찾는다.
                 .orElseThrow(() -> new RuntimeException("해당 리뷰가 없습니다 id: " + reviewId));
 
         if (reviewform != null) {
             LocalDateTime updateDate = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES); //수정한 날짜 지정
             existingReview.updateFrom(reviewform, updateDate); //수정할 정보 지정
-            reviewrepository.save(existingReview);
+            reviewRepository.save(existingReview);
         }
     }
-
 
     @Transactional
     public void deleteReview(Long reviewId) { //0102 삭제 기능
         // 리뷰 ID를 통해 리뷰를 찾기
-        Review review = reviewrepository.findById(reviewId)
+        Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 없습니다. id=" + reviewId));
 
         // DB에서 리뷰를 삭제
-        reviewrepository.delete(review);
+        reviewRepository.delete(review);
 
         uploadPhotoService.delete(reviewId); //이미지 삭제 메소드 호출
     }

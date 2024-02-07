@@ -1,7 +1,6 @@
 package com.example.streetfoodfinder.domain.form;
 import com.example.streetfoodfinder.domain.entity.Member;
 import lombok.Builder;
-import java.time.LocalDateTime;
 
 @Builder
 public class MemberUpdateForm {
