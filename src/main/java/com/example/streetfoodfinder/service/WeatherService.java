@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -62,26 +61,18 @@ public class WeatherService {
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
 
-        BufferedReader rd;
+        InputStreamReader isr;
         if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            isr = new InputStreamReader(conn.getInputStream());
         } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            isr = new InputStreamReader(conn.getErrorStream());
         }
-
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            sb.append(line);
-        }
-
-        rd.close();
-        conn.disconnect();
-        String result = sb.toString();
 
         JSONParser jsonParser = new JSONParser();
-        Object obj = jsonParser.parse(result);
-        JSONObject jsonObj = (JSONObject) obj;
+        JSONObject jsonObj = (JSONObject) jsonParser.parse(isr);
+
+        isr.close();
+        conn.disconnect();
 
         String sky = "";
         String pty = "";
