@@ -11,5 +11,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByTitle(String title);
     Optional<Review> findByContent(String content);
     Optional<Review> findByChecklist(String checklist);
-    List<Review> findByWeather (String weather);
+    List<Review> findAllByWeather(String weather);
 }
