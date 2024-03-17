@@ -125,7 +125,7 @@ public class WeatherService {
 
     //리뷰에서 날씨로 찾기
     public List<Review> weatherLikeToday(Integer x, Integer y) throws IOException, ParseException {
-        return reviewRepository.findByWeather(lookUpWeather(x, y));
+        return reviewRepository.findAllByWeather(lookUpWeather(x, y));
     }
 
 }

@@ -16,6 +16,10 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ReviewId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurantId")
+    private Restaurant restaurant;
+
     @Column(columnDefinition = "NVARCHAR(30) NOT NULL") //30자 제한
     private String title;
 
